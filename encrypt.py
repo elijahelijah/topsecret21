@@ -1,4 +1,3 @@
-
 def scramble(text):
      result = ''
      for letter in text:
