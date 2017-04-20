@@ -3,14 +3,20 @@
 import sys
 from socket import socket, gethostbyname, gethostname
 
+from encrypt import scramble
+
 MIN_PORT = 49152
 MAX_PORT = 65535
 
 
 def get_server_socket():
     s = socket()
-    ip = gethostbyname(gethostname())
-    print 'Server IP address: %s' % ip
+    try:
+        ip = gethostbyname(gethostname())
+        print 'Server IP address: %s' % ip
+    except:
+        ip = ''
+        print 'could not get IP address, will bind to all interfaces'
     for port in range(MIN_PORT, MAX_PORT):
         try:
             s.bind((ip, port))
@@ -18,6 +24,7 @@ def get_server_socket():
             break
         except:
             pass
+
     s.listen(0)
     return s.accept()[0]
 
