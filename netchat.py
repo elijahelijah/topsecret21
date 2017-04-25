@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from socket import socket, gethostbyname, gethostname
+from socket import socket, gethostbyname, gethostname, error
 
 from encrypt import scramble
 
@@ -67,8 +67,16 @@ def conversation(sock, receive_first=False):
 
 if __name__ == '__main__':
     if 'server' in sys.argv:
-        sock = get_server_socket()
-        conversation(sock, receive_first=True)
+        while 1:
+            try:
+                sock = get_server_socket()
+                conversation(sock, receive_first=True)
+            except error:
+                pass
     else:
-        sock = get_client_socket(sys.argv[1], sys.argv[2])
-        conversation(sock)
+        while 1:
+            try:
+                sock = get_client_socket(sys.argv[1], sys.argv[2])
+                conversation(sock)
+            except error:
+                pass
